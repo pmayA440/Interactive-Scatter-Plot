@@ -1,6 +1,9 @@
-// Set scatter positioning
-var svgWidth = 960;
-var svgHeight = 500;
+
+function makeResponsive () {
+
+// Set scatter parameters
+var svgWidth = window.innerHeight;
+var svgHeight = window.innerWidth;
 
 var margin = {
   top: 20,
@@ -13,7 +16,8 @@ var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group, and shift the latter by left and top margins.
-var svg = d3.select(".scatter")
+var svg = d3
+  .select(".scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -36,6 +40,7 @@ d3.csv("data.csv")
         // d.smokesHigh = +d.smokesHigh;
     });
 
+// Data correctly pulls    
 // console.log(demoData);
 
     // Create scale functions
@@ -65,14 +70,15 @@ d3.csv("data.csv")
     // Create Circles
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
-    .data(demoData)
-    .enter()
-    .append("circle")
-    .attr("cx", d => xLinearScale(d.smokes))
-    .attr("cy", d => yLinearScale(d.age))
-    .attr("r", "15")
-    .attr("fill", "pink")
-    .attr("opacity", ".5");
+      .data(demoData)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xLinearScale(d.smokes))
+      .attr("cy", d => yLinearScale(d.age))
+      // need text for abbrevs
+      .attr("r", "15")
+      .attr("fill", "grey")
+      .attr("opacity", ".5");
 
     // Initialize tool tip
     // ==============================
@@ -111,3 +117,7 @@ d3.csv("data.csv")
       .attr("class", "axisText")
       .text("Smokes)");
   });
+}
+// Add event listener for window size changes  
+// makeResponsive ();
+// d3.select(window).on("resize", makeResponsive);
