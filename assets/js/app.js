@@ -2,12 +2,13 @@
 function makeResponsive () {
 
 // Set scatter parameters
-var svgWidth = window.innerHeight;
-var svgHeight = window.innerWidth;
+// ==============================
+var svgWidth = window.innerWidth;
+var svgHeight = window.innerHeight;
 
 var margin = {
   top: 20,
-  right: 40,
+  right: 100,
   bottom: 60,
   left: 100
 };
@@ -15,9 +16,10 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-// Create an SVG wrapper, append an SVG group, and shift the latter by left and top margins.
+// Create SVG wrapper, append SVG group, shift margins
+// ==============================
 var svg = d3
-  .select(".scatter")
+  .select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -26,31 +28,30 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
+// ==============================
 d3.csv("data.csv")
   .then(function(demoData) {
 
-    // Parse Data/Cast as numbers
+    // Parse data as numbers
     // ==============================
     demoData.forEach(function(d) {
         d.state = d.state;
         d.abbr = d.abbr;
         d.age = +d.age;
         d.smokes = +d.smokes;
-        // d.smokesLow = +d.smokesLow;
-        // d.smokesHigh = +d.smokesHigh;
     });
 
 // Data correctly pulls    
-// console.log(demoData);
+console.log(demoData);
 
     // Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-      .domain([20, d3.max(demoData, d => d.smokes)])
+      .domain([8, d3.max(demoData, d => d.smokes)])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(demoData, d => d.age)])
+      .domain([30, d3.max(demoData, d => d.age)])
       .range([height, 0]);
 
     // Create axis functions
@@ -77,14 +78,14 @@ d3.csv("data.csv")
       .attr("cy", d => yLinearScale(d.age))
       // need text for abbrevs
       .attr("r", "15")
-      .attr("fill", "grey")
+      .attr("fill", "black")
       .attr("opacity", ".5");
 
     // Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      .offset([80, -60])
+      .offset([80, 60])
       .html(function(d) {
         return (`${d.abbr}<br>Age: ${d.age}<br>Smokes: ${d.smokes}`);
       });
@@ -99,11 +100,13 @@ d3.csv("data.csv")
       toolTip.show(d, this);
     })
       // onmouseout event
+      // ==============================
       .on("mouseout", function(d, i) {
         toolTip.hide(d);
       });
 
     // Create axes labels
+    // ==============================
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left + 40)
@@ -115,9 +118,10 @@ d3.csv("data.csv")
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
       .attr("class", "axisText")
-      .text("Smokes)");
+      .text("Smokes");
   });
 }
-// Add event listener for window size changes  
-// makeResponsive ();
-// d3.select(window).on("resize", makeResponsive);
+// Add event listener for window size changes
+// ==============================  
+makeResponsive ();
+d3.select(window).on("resize", makeResponsive);
