@@ -3,8 +3,10 @@ function makeResponsive () {
 
 // Set scatter parameters
 // ==============================
-var svgWidth = window.innerWidth;
-var svgHeight = window.innerHeight;
+// var svgWidth = window.innerWidth;
+var svgWidth = 800;
+// var svgHeight = window.innerHeight;
+var svgHeight = 500;
 
 var margin = {
   top: 20,
@@ -79,7 +81,7 @@ console.log(demoData);
       // need text for abbrevs
       .attr("r", "15")
       .attr("fill", "black")
-      .attr("opacity", ".5");
+      .attr("opacity", ".4");
 
     // Initialize tool tip
     // ==============================
